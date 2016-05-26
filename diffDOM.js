@@ -1,4 +1,15 @@
-(function() {
+(function(f){
+  if (!!define) {
+    define(function(require, exports, module) {
+      this.require = require;
+      this.exports = exports;
+      this.module = module
+      return f.bind(this);
+    }.bind(this));
+  } else {
+    return f.call(this);
+  }
+}.call(this, (function() {
     "use strict";
 
     var diffcount;
@@ -567,14 +578,14 @@
                 // Comment or text node.
                 if (t1.nodeName === '#text') {
                     return [new Diff({
-                        action: 'modifyTextElement',
+                        action: 'modifyComment',
                         route: route,
                         oldValue: t1.data,
                         newValue: t2.data
                     })];
                 } else {
                     return [new Diff({
-                        action: 'modifyComment',
+                        action: 'modifyTextElement',
                         route: route,
                         oldValue: t1.data,
                         newValue: t2.data
@@ -1341,4 +1352,4 @@
         this.diffDOM = diffDOM;
     }
 
-}.call(this));
+})));
